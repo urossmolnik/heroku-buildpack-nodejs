@@ -184,7 +184,11 @@ build_dependencies() {
   mtime "modules.time.cache.$cache_status" "${start}"
 
   run_if_present 'heroku-postbuild'
-  # TODO: run_if_present 'build'
+
+  # uross custom
+  header "Building ..."
+  npm run build
+
   log_build_scripts
 }
 
