@@ -92,7 +92,7 @@ yarn_node_modules() {
 }
 
 yarn_prune_devdependencies() {
-  local build_dir=${1:-} 
+  local build_dir=${1:-}
 
   if [ "$NODE_ENV" == "test" ]; then
     echo "Skipping because NODE_ENV is 'test'"
@@ -106,7 +106,7 @@ yarn_prune_devdependencies() {
     echo "Skipping because YARN_PRODUCTION is '$YARN_PRODUCTION'"
     meta_set "skipped-prune" "true"
     return 0
-  else 
+  else
     cd "$build_dir" || return
     monitor "yarn-prune" yarn install --frozen-lockfile --ignore-engines --ignore-scripts --prefer-offline 2>&1
     meta_set "skipped-prune" "false"
@@ -139,7 +139,8 @@ npm_node_modules() {
   if [ -e "$build_dir/package.json" ]; then
     cd "$build_dir" || return
 
-    if [[ "$(features_get "use-npm-ci")" == "true" ]] && [[ "$(should_use_npm_ci "$build_dir")" == "true" ]]; then
+    # if [[ "$(features_get "use-npm-ci")" == "true" ]] && [[ "$(should_use_npm_ci "$build_dir")" == "true" ]]; then
+    if [[ "$(should_use_npm_ci "$build_dir")" == "true" ]]; then
       meta_set "supports-npm-ci" "true"
       echo "Installing node modules"
       monitor "npm-install" npm ci --production="$production" --unsafe-perm --userconfig "$build_dir/.npmrc" 2>&1
@@ -180,7 +181,7 @@ npm_rebuild() {
 
 npm_prune_devdependencies() {
   local npm_version
-  local build_dir=${1:-} 
+  local build_dir=${1:-}
 
   npm_version=$(npm --version)
 
